@@ -1,0 +1,7 @@
+git init
+git status
+git add .
+git rm --cached index.php
+git commit -m "added testing file"
+rm index.php
+git restore index.php
