@@ -5,3 +5,6 @@ git rm --cached index.php
 git commit -m "added testing file"
 rm index.php
 git restore index.php
+git remote -v
+git remote add origin https://github.com/shafimiya7679/github-for-devops-workshop.git
+git remote set-url origin https://github.com/shafimiya7679/github-for-devops-workshop.git
