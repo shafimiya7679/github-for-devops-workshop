@@ -1,0 +1,78 @@
+name: PHP CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [8.3]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Setup PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+          extensions: mbstring, xml, curl
+
+      # Validate composer.json
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      # Cache vendor directory
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      # Install dependencies
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      # PHPCS code style check
+      - name: Run PHPCS (PSR-12)
+        run: php -d xdebug.mode=off ./vendor/bin/phpcs --standard=PSR12 src
+
+      # PHPStan static analysis
+      - name: Run PHPStan
+        run: php -d xdebug.mode=off ./vendor/bin/phpstan analyse src --level=max
+
+      # Psalm static + taint analysis
+      - name: Run Psalm
+        run: |
+          if [ -f "./psalm.xml" ]; then
+            php -d xdebug.mode=off ./vendor/bin/psalm --taint-analysis
+          else
+            echo "Psalm config not found. Run './vendor/bin/psalm --init' locally first."
+          fi
+
+      # PHPUnit tests
+      - name: Run PHPUnit
+        run: composer run-script test
+
+  secrets-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Gitleaks for secret scanning
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: detect --source . --no-git -v
