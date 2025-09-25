@@ -3,7 +3,8 @@
   "description": "this is a github devops workshop demo",
   "require-dev": {
     "squizlabs/php_codesniffer": "^4.0",
-    "phpstan/phpstan": "^2.1"
+    "phpstan/phpstan": "^2.1",
+    "vimeo/psalm": "dev-master"
   },
   "autoload": {
     "psr-4": {
