@@ -1,0 +1,25 @@
+{
+  "name": "shafi/github-for-devops-workshop",
+  "description": "this is a github devops workshop demo",
+  "license": "proprietary",
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^4.0",
+    "phpstan/phpstan": "^2.1",
+    "vimeo/psalm": "^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Shafi\\GithubForDevopsWorkshop\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "shafi"
+    }
+  ],
+  "scripts": {
+    "test": "vendor/bin/phpstan analyse src --level=max",
+    "lint": "vendor/bin/phpcs --standard=PSR12 src",
+    "psalm": "vendor/bin/psalm --taint-analysis"
+  }
+}
