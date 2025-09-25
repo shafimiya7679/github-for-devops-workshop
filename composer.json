@@ -1,0 +1,18 @@
+{
+  "name": "shafi/github-for-devops-workshop",
+  "description": "this is a github devops workshop demo",
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^4.0",
+    "phpstan/phpstan": "^2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Shafi\\GithubForDevopsWorkshop\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "shafi"
+    }
+  ]
+}
