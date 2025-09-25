@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [8.4]
+        php-version: [8.2, 8.3]
 
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
 
       # Validate composer.json
       - name: Validate composer.json
-        run: composer validate --strict || true
+        run: composer validate --strict
 
       # Cache vendor directory
       - name: Cache Composer packages
@@ -63,7 +63,7 @@ jobs:
 
       # PHPUnit tests
       - name: Run PHPUnit
-        run: composer run-script test || echo "No tests defined in composer.json"
+        run: composer run-script test
 
   secrets-scan:
     runs-on: ubuntu-latest
