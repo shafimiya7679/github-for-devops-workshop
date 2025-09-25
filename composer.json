@@ -16,5 +16,10 @@
     {
       "name": "shafi"
     }
-  ]
+  ],
+  "scripts": {
+    "test": "vendor/bin/phpstan analyse src --level=max",
+    "lint": "vendor/bin/phpcs --standard=PSR12 src",
+    "psalm": "vendor/bin/psalm --taint-analysis"
+  }
 }
